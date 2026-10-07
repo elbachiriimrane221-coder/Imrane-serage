@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#08090d">
+  <meta name="description" content="Imrane & Serage — Original stories and novels.">
+
+  <title>Imrane & Serage</title>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --surface: #0e1017;
+      --surface-2: #141720;
+      --surface-3: #1b1e29;
+      --text: #f7f7fa;
+      --muted: #969ba9;
+      --border: rgba(255,255,255,.08);
+      --accent: #8b5cf6;
+      --accent-2: #a78bfa;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(139,92,246,.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 74px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,8,12,.86);
+      backdrop-filter: blur(20px);
+    }
+
+    .header-inner {
+      width: min(1400px, 100%);
+      height: 100%;
+      margin: auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    /* LOGO */
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: max-content;
+    }
+
+    .logo-mark {
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, #a78bfa, #6d28d9);
+      box-shadow:
+        0 8px 30px rgba(139,92,246,.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-mark::before {
+      content: "";
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border: 2px solid rgba(255,255,255,.9);
+      border-radius: 7px;
+      transform: rotate(45deg);
+    }
+
+    .logo-mark::after {
+      content: "I";
+      position: relative;
+      z-index: 2;
+      font-weight: 900;
+      font-size: 18px;
+      color: white;
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+    }
+
+    .brand-name span {
+      color: var(--accent-2);
+    }
+
+    /* NAV */
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .nav a {
+      color: #b8bbc6;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .nav a:hover {
+      color: white;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 41px;
+      height: 41px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: white;
+      display: grid;
+      place-items: center;
+      transition: .2s;
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-2);
+      border-color: rgba(139,92,246,.5);
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      width: min(1400px, 100%);
+      margin: auto;
+      padding: 42px 24px 20px;
+    }
+
+    .hero-box {
+      min-height: 420px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 55px;
+      background:
+        radial-gradient(
+          circle at 85% 30%,
+          rgba(139,92,246,.30),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 65% 90%,
+          rgba(76,29,149,.18),
+          transparent 30%
+        ),
+        linear-gradient(135deg,#10121b,#090a0f);
+    }
+
+    .hero-decoration {
+      position: absolute;
+      right: -80px;
+      top: -100px;
+      width: 420px;
+      height: 420px;
+      border: 1px solid rgba(167,139,250,.16);
+      border-radius: 50%;
+    }
+
+    .hero-decoration::before,
+    .hero-decoration::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(167,139,250,.10);
+      border-radius: 50%;
+    }
+
+    .hero-decoration::before {
+      inset: 45px;
+    }
+
+    .hero-decoration::after {
+      inset: 100px;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(139,92,246,.25);
+      background: rgba(139,92,246,.10);
+      color: #c4b5fd;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .7px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #a78bfa;
+      box-shadow: 0 0 12px #a78bfa;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 70px);
+      line-height: .98;
+      letter-spacing: -3px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      color: var(--accent-2);
+    }
+
+    .hero-description {
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 11px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+    }
+
+    .primary-btn:hover {
+      background: #7c3aed;
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      background: rgba(255,255,255,.04);
+      color: white;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      width: min(1400px, 100%);
+      margin: auto;
+      padding: 20px 24px 90px;
+    }
+
+    .section {
+      margin-top: 45px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 23px;
+      letter-spacing: -.6px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    /* SEARCH */
+
+    .search-box {
+      display: flex;
+      gap: 9px;
+      margin-bottom: 25px;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 13px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: white;
+      padding: 0 16px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: rgba(139,92,246,.65);
+    }
+
+    /* EMPTY STATE */
+
+    .stories-container {
+      min-height: 230px;
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 20px;
+      background: rgba(255,255,255,.015);
+    }
+
+    .empty-state {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 35px;
+    }
+
+    .empty-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-size: 25px;
+      margin-bottom: 15px;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+
+    .empty-state p {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 420px;
+      line-height: 1.7;
+    }
+
+    /* STORY GRID */
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 17px;
+    }
+
+    .story-card {
+      overflow: hidden;
+      border-radius: 17px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: .25s;
+    }
+
+    .story-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(139,92,246,.45);
+    }
+
+    .story-cover {
+      aspect-ratio: 3 / 4;
+      background: var(--surface-2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .story-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .story-info {
+      padding: 14px;
+    }
+
+    .story-title {
+      font-weight: 750;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .story-meta {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* CATEGORIES */
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .category {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: #c6c9d2;
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-size: 12px;
+      transition: .2s;
+    }
+
+    .category:hover {
+      color: white;
+      border-color: rgba(139,92,246,.5);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+      border-top: 1px solid var(--border);
+      background: #050609;
+      padding: 42px 24px;
+    }
+
+    .footer-inner {
+      width: min(1400px, 100%);
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .footer-copy {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 10px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: start;
+    }
+
+    .footer-links a {
+      color: #a6a9b4;
+      font-size: 12px;
+    }
+
+    .footer-credit {
+      margin-top: 15px;
+      color: #777b88;
+      font-size: 11px;
+    }
+
+    /* =========================
+       MODALS
+    ========================= */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.70);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(500px,100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      padding: 24px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-2);
+      color: white;
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-row:last-child {
+      border-bottom: 0;
+    }
+
+    .settings-row span {
+      color: #c9cbd3;
+      font-size: 14px;
+    }
+
+    .select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1100px) {
+
+      .story-grid {
+        grid-template-columns: repeat(4,1fr);
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: grid;
+      }
+    }
+
+    @media (max-width: 750px) {
+
+      .header {
+        height: 65px;
+      }
+
+      .header-inner {
+        padding: 0 15px;
+      }
+
+      .brand-name {
+        font-size: 15px;
+      }
+
+      .logo-mark {
+        width: 39px;
+        height: 39px;
+      }
+
+      .hero {
+        padding: 18px 15px;
+      }
+
+      .hero-box {
+        padding: 32px 22px;
+        min-height: 450px;
+        border-radius: 22px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+
+      .hero-description {
+        font-size: 14px;
+      }
+
+      .main {
+        padding: 10px 15px 70px;
+      }
+
+      .story-grid {
+        grid-template-columns: repeat(2,1fr);
+        gap: 11px;
+      }
+
+      .story-info {
+        padding: 11px;
+      }
+
+      .footer {
+        padding: 35px 15px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 400px) {
+
+      .story-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .brand-name {
+        display: none;
+      }
+
+      .actions .icon-btn:nth-child(2) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a href="#" class="brand">
+
+        <div class="logo-mark"></div>
+
+        <div class="brand-name">
+          Imrane <span>&</span> Serage
+        </div>
+
+      </a>
+
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#stories">Stories</a>
+        <a href="#categories">Categories</a>
+        <a href="#about">About</a>
+      </nav>
+
+      <div class="actions">
+
+        <button
+          class="icon-btn"
+          onclick="focusSearch()"
+          aria-label="Search">
+          ⌕
+        </button>
+
+        <button
+          class="icon-btn"
+          onclick="openSettings()"
+          aria-label="Settings">
+          ⚙
+        </button>
+
+        <button
+          class="icon-btn mobile-menu"
+          onclick="openMobileMenu()"
+          aria-label="Menu">
+          ☰
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <section class="hero" id="home">
+
+    <div class="hero-box">
+
+      <div class="hero-decoration"></div>
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          ORIGINAL STORIES
+        </div>
+
+        <h1>
+          Stories made to
+          <span>be remembered.</span>
+        </h1>
+
+        <p class="hero-description">
+          Welcome to Imrane & Serage.
+          A place for original novels, adventures,
+          characters and worlds created and published
+          by Imrane and Serage.
+        </p>
+
+        <div class="hero-buttons">
+
+          <button
+            class="primary-btn"
+            onclick="goToStories()">
+            Explore Stories
+          </button>
+
+          <button
+            class="secondary-btn"
+            onclick="focusSearch()">
+            Search
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="main">
+
+    <!-- SEARCH -->
+
+    <section class="section" id="stories">
+
+      <div class="section-header">
+
+        <div>
+          <h2 class="section-title">
+            Stories
+          </h2>
+
+          <p class="section-subtitle">
+            Discover the stories published by Imrane and Serage.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="search-box">
+
+        <input
+          id="searchInput"
+          class="search-input"
+          type="search"
+          placeholder="Search stories..."
+          autocomplete="off">
+
+      </div>
+
+
+      <!--
+        IMPORTANT:
+        No fake stories are inserted here.
+
+        Real stories will be loaded from Supabase.
+      -->
+
+      <div id="storyGrid" class="story-grid"></div>
+
+      <div id="emptyState" class="stories-container">
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📖
+          </div>
+
+          <h3>
+            No stories published yet
+          </h3>
+
+          <p>
+            When Imrane or Serage publishes a story,
+            it will appear here automatically.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CATEGORIES -->
+
+    <section class="section" id="categories">
+
+      <div class="section-header">
+
+        <div>
+          <h2 class="section-title">
+            Categories
+          </h2>
+
+          <p class="section-subtitle">
+            Find stories by genre.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="categories">
+
+        <button class="category">Action</button>
+        <button class="category">Adventure</button>
+        <button class="category">Fantasy</button>
+        <button class="category">Mystery</button>
+        <button class="category">Drama</button>
+        <button class="category">Sci-Fi</button>
+        <button class="category">Isekai</button>
+        <button class="category">Horror</button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section class="section" id="about">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2 class="section-title">
+            About
+          </h2>
+
+          <p class="section-subtitle">
+            About the platform.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        style="
+          border:1px solid var(--border);
+          background:var(--surface);
+          border-radius:20px;
+          padding:25px;
+          line-height:1.8;
+          color:var(--muted);
+          font-size:14px;
+        ">
+
+        <p>
+          Imrane & Serage is an independent story platform
+          created for publishing original novels and stories.
+        </p>
+
+        <p style="margin-top:12px;">
+          Only authorized creators can publish stories.
+          Readers can discover and read the published content.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="footer">
+
+    <div class="footer-inner">
+
+      <div>
+
+        <a href="#" class="brand">
+
+          <div class="logo-mark"></div>
+
+          <div class="brand-name">
+            Imrane <span>&</span> Serage
+          </div>
+
+        </a>
+
+        <p class="footer-copy">
+          Original stories. New worlds.
+        </p>
+
+        <p class="footer-credit">
+          by Imrane and Serage
+        </p>
+
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#home">Home</a>
+        <a href="#stories">Stories</a>
+        <a href="#categories">Categories</a>
+        <a href="#about">About</a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       SETTINGS MODAL
+  ========================== -->
+
+  <div
+    id="settingsModal"
+    class="modal"
+    onclick="closeSettingsOutside(event)">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <h2>
+          Settings
+        </h2>
+
+        <button
+          class="close-btn"
+          onclick="closeSettings()">
+          ×
+        </button>
+
+      </div>
+
+      <div class="settings-row">
+
+        <span>
+          Language
+        </span>
+
+        <select class="select" id="languageSelect">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+
+      </div>
+
+      <div class="settings-row">
+
+        <span>
+          Theme
+        </span>
+
+        <select class="select" id="themeSelect">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+
+      </div>
+
+      <div class="settings-row">
+
+        <span>
+          Reading mode
+        </span>
+
+        <select class="select">
+          <option>Comfortable</option>
+          <option>Compact</option>
+        </select>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MOBILE MENU
+  ========================== -->
+
+  <div
+    id="mobileMenu"
+    class="modal"
+    onclick="closeMobileOutside(event)">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <h2>
+          Menu
+        </h2>
+
+        <button
+          class="close-btn"
+          onclick="closeMobileMenu()">
+          ×
+        </button>
+
+      </div>
+
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:10px;
+        ">
+
+        <button class="secondary-btn" onclick="goTo('home')">
+          Home
+        </button>
+
+        <button class="secondary-btn" onclick="goTo('stories')">
+          Stories
+        </button>
+
+        <button class="secondary-btn" onclick="goTo('categories')">
+          Categories
+        </button>
+
+        <button class="secondary-btn" onclick="goTo('about')">
+          About
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script>
+
+    /*
+      =====================================================
+      SUPABASE CONFIGURATION
+      =====================================================
+
+      We are NOT putting fake stories here.
+
+      Your real stories will eventually come from Supabase.
+
+      IMPORTANT:
+      Do not put a secret/service_role key here.
+      Only the public publishable/anon key belongs in
+      browser-side code.
+    */
+
+    const SUPABASE_URL = "https://hxrogwawaddmihxnvqli.supabase.co/rest/v1/";
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_BR1wGe_9HPU1yjQv2SZ0QQ_DD92aha5hal";
+
+
+    let supabaseClient = null;
+
+
+    /*
+      Initialize Supabase only when the real project URL
+      and publishable key have been added.
+    */
+
+    if (
+      SUPABASE_URL.startsWith("http") &&
+      SUPABASE_PUBLISHABLE_KEY.startsWith("sb_")
+    ) {
+
+      supabaseClient =
+        window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+    }
+
+
+    /*
+      ==========================================
+      NAVIGATION
+      ==========================================
+    */
+
+    function goTo(id) {
+
+      const element =
+        document.getElementById(id);
+
+      if (element) {
+
+        element.scrollIntoView({
+          behavior: "smooth"
+        });
+
+      }
+
+      closeMobileMenu();
+
+    }
+
+
+    function goToStories() {
+      goTo("stories");
+    }
+
+
+    function focusSearch() {
+
+      const input =
+        document.getElementById("searchInput");
+
+      goToStories();
+
+      setTimeout(() => {
+        input.focus();
+      }, 400);
+
+    }
+
+
+    /*
+      ==========================================
+      SETTINGS
+      ==========================================
+    */
+
+    function openSettings() {
+
+      document
+        .getElementById("settingsModal")
+        .classList.add("active");
+
+    }
+
+
+    function closeSettings() {
+
+      document
+        .getElementById("settingsModal")
+        .classList.remove("active");
+
+    }
+
+
+    function closeSettingsOutside(event) {
+
+      if (
+        event.target.id === "settingsModal"
+      ) {
+
+        closeSettings();
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      MOBILE MENU
+      ==========================================
+    */
+
+    function openMobileMenu() {
+
+      document
+        .getElementById("mobileMenu")
+        .classList.add("active");
+
+    }
+
+
+    function closeMobileMenu() {
+
+      document
+        .getElementById("mobileMenu")
+        .classList.remove("active");
+
+    }
+
+
+    function closeMobileOutside(event) {
+
+      if (
+        event.target.id === "mobileMenu"
+      ) {
+
+        closeMobileMenu();
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      LOAD REAL STORIES
+      ==========================================
+
+      This function is intentionally prepared for
+      Supabase.
+
+      It does NOT create fake stories.
+    */
+
+    async function loadStories() {
+
+      if (!supabaseClient) {
+
+        showEmptyState();
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          data,
+          error
+        } = await supabaseClient
+          .from("stories")
+          .select("*")
+          .eq("published", true)
+          .order("created_at", {
+            ascending: false
+          });
+
+
+        if (error) {
+
+          console.error(
+            "Supabase error:",
+            error
+          );
+
+          showEmptyState();
+          return;
+
+        }
+
+
+        renderStories(data || []);
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        showEmptyState();
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      RENDER STORIES
+      ==========================================
+    */
+
+    function renderStories(stories) {
+
+      const grid =
+        document.getElementById("storyGrid");
+
+      const empty =
+        document.getElementById("emptyState");
+
+
+      grid.innerHTML = "";
+
+
+      if (!stories.length) {
+
+        showEmptyState();
+        return;
+
+      }
+
+
+      empty.style.display = "none";
+      grid.style.display = "grid";
+
+
+      stories.forEach(story => {
+
+        const card =
+          document.createElement("article");
+
+        card.className = "story-card";
+
+
+        const cover =
+          story.cover_url
+          ? `<img src="${escapeHTML(story.cover_url)}"
+                  alt="${escapeHTML(story.title || "Story cover")}">`
+          : "";
+
+
+        card.innerHTML = `
+
+          <div class="story-cover">
+            ${cover}
+          </div>
+
+          <div class="story-info">
+
+            <div class="story-title">
+              ${escapeHTML(story.title || "Untitled")}
+            </div>
+
+            <div class="story-meta">
+              by Imrane and Serage
+            </div>
+
+          </div>
+
+        `;
+
+
+        card.addEventListener(
+          "click",
+          () => {
+
+            if (story.id) {
+
+              window.location.href =
+                "story.html?id=" +
+                encodeURIComponent(story.id);
+
+            }
+
+          }
+        );
+
+
+        grid.appendChild(card);
+
+      });
+
+    }
+
+
+    function showEmptyState() {
+
+      document
+        .getElementById("storyGrid")
+        .style.display = "none";
+
+      document
+        .getElementById("emptyState")
+        .style.display = "block";
+
+    }
+
+
+    /*
+      ==========================================
+      SEARCH
+      ==========================================
+    */
+
+    document
+      .getElementById("searchInput")
+      .addEventListener(
+        "input",
+        async function () {
+
+          const query =
+            this.value.trim().toLowerCase();
+
+
+          if (!query) {
+
+            loadStories();
+            return;
+
+          }
+
+
+          if (!supabaseClient) {
+            return;
+          }
+
+
+          const {
+            data,
+            error
+          } = await supabaseClient
+            .from("stories")
+            .select("*")
+            .eq("published", true)
+            .ilike(
+              "title",
+              "%" + query + "%"
+            );
+
+
+          if (!error) {
+
+            renderStories(data || []);
+
+          }
+
+        }
+      );
+
+
+    /*
+      ==========================================
+      SECURITY HELPER
+      ==========================================
+    */
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /*
+      ==========================================
+      START
+      ==========================================
+    */
+
+    loadStories();
+
+  </script>
+
+</body>
+</html>
